@@ -1,0 +1,83 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/03/20
+-------------------------------------------------------
+Answers for Lab 8
+-------------------------------------------------------
+
+Task 1
+
+// your code here
+.equ ENTER, 0x0A            // The enter key code
+
+// your code here
+stmfd sp!, {r0, r1, r4}  // Preserve temporary registers
+ldr   r1, =UART_BASE     // Get address of UART
+
+wsLOOP:
+ldrb  r0, [r4], #1       // Load a byte from the string
+cmp   r0, #0
+beq   _WriteString       // Stop when NULL character is reached
+str   r0, [r1]           // Write character to UART
+b     wsLOOP
+
+_WriteString:
+ldr   r0, =ENTER         // Load ENTER key code
+str   r0, [r1]           // Send ENTER key code to UART
+ldmfd sp!, {r0, r1, r4}  // Recover temporary registers
+-------------------------------------------------------
+
+Task 2
+
+// your code here
+mov    r5, #SIZE  // Set buffer size
+
+// your code here
+stmfd sp!, {r0, r1, r4, r5}  // Preserve temporary registers
+ldr   r1, =UART_BASE         // Get address of UART
+
+rsLOOP:
+ldr   r0, [r1]               // Read UART data register
+tst   r0, #VALID             // Check for data
+beq   _ReadString            // Exit loop if no data
+
+cmp   r0, #ENTER             // Check for ENTER key
+beq   _ReadString            // Stop reading on ENTER key
+
+strb  r0, [r4]               // Store character in memory
+add   r4, r4, #1             // Move to next byte in buffer
+
+subs  r5, r5, #1             // Decrement buffer size counter
+beq   _ReadString            // Stop reading if buffer is full
+
+
+b     rsLOOP
+
+_ReadString:
+ldmfd sp!, {r0, r1, r4, r5}  // Recover temporary registers
+-------------------------------------------------------
+
+Task 3
+
+// your code here
+stmfd sp!, {r0, r1}      // Preserve temporary registers
+ldr   r1, =UART_BASE     // Get address of UART
+
+esLOOP:
+ldr   r0, [r1]           // Read UART data register
+tst   r0, #VALID         // Check for data
+beq   esLOOP             // Wait for input
+
+cmp   r0, #ENTER         // Check for ENTER key
+beq   _Finish          // Stop reading on ENTER key
+
+str   r0, [r1]           // Echo character to UART
+b     esLOOP             // Continue looping
+
+_Finish:
+ldmfd sp!, {r0, r1}      // Recover temporary registers
+
