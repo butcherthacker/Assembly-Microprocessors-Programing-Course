@@ -1,0 +1,79 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/04/03
+-------------------------------------------------------
+Answers for Lab 8
+-------------------------------------------------------
+
+1. *LDR R1, =200000000            // 2 second timeout*
+
+-------------------------------------------------------
+
+2.
+
+TIMER_SETTING:
+
+PUSH {R0-R2, LR}              // save registers
+LDR R0, =TIMER_BASE           // FF202000
+
+LDR R1, =200000000            // 2 second timeout
+
+STR R1, [R0, #8]              // store low half word of counter
+LSR R2, R1, #16               // start value
+STR R2, [R0, #12]             // high half word of counter start value
+
+MOV R1, #0					  //initialize T0 to 0
+STR R1, [R0]
+
+MOV R1, #0b111                // bit 3 = stop (0), bit 2 = start (1), bit 1 = continue (1), bit 0 = interrupt enable (1)
+STR R1, [R0, #4]              // control register (base+4)
+
+POP {R0-R2, LR}               // restore registers
+BX LR
+
+-------------------------------------------------------
+
+3.
+
+INTER_TIMER_ISR:
+
+PUSH {R0-R3, LR}              // save
+    
+LDR R0, =TIMER_BASE
+MOV R1, #0
+STR R1, [R0]                  // clear t0
+    
+LDR R0, =UART_ADDR            // uart base
+LDR R1, =ARR1                 // timeout string
+    
+UART_LOOP:
+LDRB R2, [R1], #1             // post increment address
+CMP R2, #0                    // null terminator check
+BEQ NEWLINE                   // if null, proceed with enter (newline) character
+    
+WAIT:
+LDR R3, [R0, #4]              // uart control register
+LSR R3, R3, #16               // shift
+CMP R3, #0                   
+BEQ WAIT                      // wait for timer to expire
+    
+STR R2, [R0]                  // write char from string to UART
+B UART_LOOP                   // continue output loop
+    
+
+NEWLINE:                     // enter char
+
+LDR R3, [R0, #4]              
+LSR R3, R3, #16               
+CMP R3, #0                    
+BEQ NEWLINE                   // wait for timer to expire           
+
+LDR R2, =ENTER
+STR R2, [R0]                  // write enter char to UART (0xA)
+    
+POP {R0-R3, LR}               // pop preserved registers
+BX LR                         // return from subroutine
