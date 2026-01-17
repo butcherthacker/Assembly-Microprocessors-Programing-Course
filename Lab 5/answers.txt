@@ -1,0 +1,50 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/02/14
+-------------------------------------------------------
+Answers for Lab 4
+-------------------------------------------------------
+
+Task 1
+// Initializes sum in r0 to 0
+
+loop:
+// Check if we have reached the end of list
+// If 0 then exit program
+// Loads the current list value into r3 before iterating to the next
+// Adds the value in r3 to the sum in r0
+// Continues loop
+
+finish:
+// Return statement
+
+
+
+Task 2
+// Sets registers to consecutive memory locations
+
+loop:
+// Compares to see if the starting list pointer address reaches end pointer
+// If 0 then the end of the list has been reached, exit program
+// Loads the current list value into r0 before iterating to the next
+// Compares list value in r0 to zero
+// If 0, branch to zeroes_count
+// If negative, branch to negatives_count
+// If we didn't branch, add one to positive count
+// Continues loop
+
+zeroes_count:
+// Adds one to the zero count
+// Continues loop
+
+negatives_count:
+// Adds one to the negative count
+// Continues loop
+
+finish:
+// Recover registers from being set to consecutive memory locations
+// Return from subroutine
