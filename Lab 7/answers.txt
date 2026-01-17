@@ -1,0 +1,86 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/03/13
+-------------------------------------------------------
+Answers for Lab 7
+-------------------------------------------------------
+
+Task 1
+//=======================================================
+// stmfd   sp!, {lr} -> lr must be preserved since two different subroutines are called
+// ldmfd sp!, {lr}	-> return caller address each bl from the two subroutines overwrite lr so it mujst be pushed onto the stack and then popped off before returning
+//=======================================================
+
+stmfd   sp!, {lr}     // preserve lr to hold onto return address
+
+bl      isLowerCase     // test for lowercase
+
+cmp     r0, #0
+bleq    isUpperCase     // not lowercase? Test for uppercase.
+
+ldmfd sp!, {lr}		// return caller address
+bx      lr		// return to caller
+
+
+
+Task 2
+
+stmfd   sp!, {r4, r5, r6, lr} // prologue
+
+cmp r4, r5
+bge Is_A_Palindrome
+
+ldrb r2, [r4]	// Check if first character is a letter
+bl isLetter
+cmp r0, #0	// If character is not a letter, skip
+beq Scan_Right
+
+ldrb r2, [r5]	// Check if last character is a letter
+bl isLetter
+cmp r0, #0	// If character is not a letter, skip
+beq Scan_Left
+
+cmp r4, r5	// Only compares if the characters are letters
+bge Is_A_Palindrome
+
+ldrb r2, [r4]	// Convert first character to lowercase
+bl toLower
+mov r6, r2
+
+ldrb r2, [r5]	// Convert last character to lowercase
+bl toLower
+cmp r6, r2
+bne Not_A_Palindrome
+
+add r4, r4, #1
+sub r5, r5, #1
+bl Palindrome
+b Finish
+
+
+
+Scan_Left:	// Scans to the left from the end of the string
+sub r5, r5, #1
+bl Palindrome
+b Finish
+
+Scan_Right:	// Scans to the right from the start of the string
+add r4, r4, #1
+bl Palindrome
+b Finish
+
+Is_A_Palindrome:
+mov r0, #1	// Sets result to true
+b Finish
+
+Not_A_Palindrome:
+mov r0, #0 // Sets result to false
+b Finish
+
+Finish: // epilogue
+ldmfd   sp!, {r4, r5, r6, lr}
+bx      lr
