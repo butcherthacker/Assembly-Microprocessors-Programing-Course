@@ -1,0 +1,20 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025-01-23
+-------------------------------------------------------
+Answers for Lab 1
+-------------------------------------------------------
+
+Task 1
+The programs behaviour is identical regardless of whether the constant value is expressed as 0xE in hex or 14 in decimal.
+
+
+Task 2
+Yes, it is completely legal to add r3 to the value in the register r3 and put the resulting value back into the register r3. In this case we get 8 + 8 = 16 in R3.
+
+Task 3
+It isn't legal to add two constants to a register in a single line add instruction. If we replace the middle operand with a register instead of a constant, then it does work.
