@@ -1,0 +1,29 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/02/06
+-------------------------------------------------------
+Answers for Lab 3
+-------------------------------------------------------
+
+Task 1
+After changing the program from using 'bgt' to instead use 'bge', the final value in r3 changes from being '0' when the loop is finished to becoming '-1' (signed decimal) or 'ffffffff' (hex)
+
+Task 2
+The memory address of COUNTER is 00001020 in hexadecimal.
+
+Task 3
+
+Altering the memory value for LED_BITS can be used to fundementally change the behaviour of the timer with respect to the LED output pattern.
+For instance,
+With the original hexadecimal value for LED_BITS of '0x0F0F0F0F', the LED counter behaves like a ring counter with a pattern of 4 high (on) LEDS looping around the counter.
+However,
+If we change the hexadecimal value for LED_BITS to say '0x11111111' the LED counter behaves like a ring counter but now with a looping pattern of a repeating one high (on) LED followed by 3 low (off) LEDs.
+Or,
+If we change the hexadecimal value for LED_BITS to '0x0000FFFF' then the LED counter now behaves like a Johnson counter where the looping pattern sets all the LEDs to high (on) and then after a delay loops back around to set them all to low (off) before repeating.
+
+
+Altering the memory value for DELAY_TIME changes the timing delay between ticks for the counter. Larger values increase the delay (slow the counter) while smaller values decrease the delay (speed it up).
