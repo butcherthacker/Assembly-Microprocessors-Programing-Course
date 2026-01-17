@@ -1,0 +1,56 @@
+-------------------------------------------------------
+answers.txt
+-------------------------------------------------------
+Author: Angus Thacker
+ID: 169061398
+Email: thac1398@mylaurier.ca
+Date: 2025/01/30
+-------------------------------------------------------
+Answers for Lab 2
+-------------------------------------------------------
+
+Task 1
+
+Syntax error required moving semicolon and adding equals sign for the line:
+'ldr r3, A;' -> 'ldr r3, =A'
+
+Syntax error required moving colon and adding equals sign for the line:
+'ldr r3, B:' -> 'ldr r3, =B'
+
+Syntax error required removal of square brackets for r0 in the line:
+'add r2, r1, [r0]' -> 'add r2, r1, r0'
+
+
+Task 2
+
+Syntax error required adding square brackets around r3 for the line:
+'str r2, r3' -> 'str r2, [r3]'
+
+Syntax error required adding square brackets around r3 again for the repeated line:
+'str r2, r3' -> 'str r2, [r3]'
+
+Typo required adjusting the name of the variable Diff so that it matches the variable name intended in data:
+'ldr r3, =Difff' -> 'ldr r3, =Diff
+
+
+Task 3
+
+Removed unnecessary duplication of .text code section previously included:
+'.text // code section' -> '//Removed unnecessary duplication of .text code section previously here'
+
+Logic error required fixing the line to increment r0 by 4 bytes instead of 2 to prevent misalignment:
+'add r0, r0, #2' -> 'add r0, r0, #4'
+
+Logic error required fixing the line to increment r1 by 4 bytes instead of 2 to prevent misalignment:
+'add r1, r1, #2' -> 'add r1, r1, #4'
+
+Logic error required fixing the line to increment r0 instead of incrementing r1 twice:
+'add r1, r1, #4' -> 'add r0, r0, #4'
+
+Logic error required fixing the line to store value at address of r1 in r2 instead of r2 to itself:
+'str r2, [r2]' -> 'str r2, [r1]'
+
+Logic error required fixing the line from .word to .space to properly store data:
+'.word 6' -> '.space 6'
+
+
